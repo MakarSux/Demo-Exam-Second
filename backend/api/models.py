@@ -19,7 +19,7 @@ class CustomUser(AbstractUser):
     username = models.CharField('Логин', max_length=255, unique=True)
     email = models.EmailField('E-mail', unique=True)
     full_name = models.CharField('ФИО', max_length=255)
-    phone = models.CharField('Телефон', max_length=11)
+    phone = models.CharField('Телефон', max_length=20)
     
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'full_name', 'phone']
