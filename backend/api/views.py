@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+
 from rest_framework import viewsets, permissions, generics
 from rest_framework import status
 from rest_framework.response import Response
@@ -7,6 +10,11 @@ from rest_framework.views import APIView
 
 from .models import Order
 from .serializers import UserRegistrationSerializer, OrderSerializer
+
+
+def get_csrf_token(request):
+    csrf_token = get_token(request)
+    return JsonResponse({'csrfToken': csrf_token})
 
 
 class UserRegistrationView(APIView):
