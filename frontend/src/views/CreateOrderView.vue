@@ -1,12 +1,21 @@
 <script setup>
+import router from '@/router';
 import axios from 'axios'
-import { ref } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
 
+const router = useRouter()
+
+const userId = ref(null)
 const address = ref('')
 const desiredDate = ref('')
 const desiredTime = ref('')
 const serviceKind = ref('Общий клининг')
 const paymentType = ref('Наличные')
+
+onMounted(() => {
+    userId.value = localStorage.getItem('user_id')
+})
 
 const submitOrder = () => {
     const orderData = {
@@ -15,12 +24,16 @@ const submitOrder = () => {
         desired_time: desiredTime.value,
         service_kind: serviceKind.value,
         payment_type: paymentType.value,
+        client: userId.value
     }
 
     axios
         .post('http://127.0.0.1:8000/orders/', orderData)
         .then(response => {
             console.log('Заявка успешно отправлена:', response.data)
+            if (response.status === 201) {
+                router.push('/home')
+            }
             // Очистка формы после успешной отправки
             address.value = ''
             desiredDate.value = ''
