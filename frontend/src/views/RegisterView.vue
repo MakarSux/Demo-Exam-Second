@@ -7,7 +7,8 @@ import axios from 'axios'
 const user = ref({
     login: "",
     email: "",
-    fullName: "",
+    firstName: "",
+    lastName: "",
     phone: "",
     password: ""
 })
@@ -19,13 +20,14 @@ const register = () => {
     const sendData = {
         'username': user.value.login,
         'email': user.value.email,
-        'full_name': user.value.fullName,
+        'first_name': user.value.firstName,
+        'last_name': user.value.lastName,
         'phone': user.value.phone,
         'password': user.value.password
     }
 
     axios
-        .post(`${url}reg/`, sendData, {
+        .post(`${url}users/`, sendData, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -59,8 +61,13 @@ const register = () => {
             </div>
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="floatingInput2" placeholder="Иванов Иван Иванович"
-                    v-model="user.fullName">
-                <label for="floatingInput2">Фио</label>
+                    v-model="user.firstName">
+                <label for="floatingInput2">Имя</label>
+            </div>
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="floatingInput2-1" placeholder="Иванов Иван Иванович"
+                    v-model="user.lastName">
+                <label for="floatingInput2-1">Фамилия</label>
             </div>
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="floatingInput3" placeholder="+7(XXX)-XXX-XX-XX"

@@ -1,28 +1,24 @@
-from .models import Order
+from .models import *
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
 import re
 
-User = get_user_model()
 
-
-class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = "__all__"
-        
-        
+        model = CustomUser
+        fields = ('id', 'username', 'email', 'phone', 'first_name', 'last_name', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
     def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            full_name = validated_data['full_name'],
-            phone = validated_data['phone'],
-        )
+        user = CustomUser.objects.create(**validated_data)
         return user
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
 
 
 class OrderSerializer(serializers.ModelSerializer):

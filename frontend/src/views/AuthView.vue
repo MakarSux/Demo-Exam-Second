@@ -8,52 +8,36 @@ const user = ref({
     password: ""
 })
 
-const csrfToken = ref(null)
-
 const router = useRouter()
 
 const url = 'http://127.0.0.1:8000/'
 
-onMounted( () => {
-    getCsrfToken()
-})
-
-const getCsrfToken = () => {
-    try {
-        axios
-            .get(`${url}get-csrf-token/`)
-            .then(response => {
-                csrfToken.value = response.data.csrfToken
-                console.log(response.data.csrfToken)
-            })
-
-    } catch (error) {
-        console.log(error)
-    }
-}
 
 const login = () => {
-    console.log(csrfToken.value)
     const sendData = {
         'username': user.value.login,
         'password': user.value.password,
-        'csrfmiddlewaretoken': csrfToken.value
     }
 
     axios
-        .post(`${url}api-auth/login/`, sendData, {
+        .post(`${url}login/`, sendData, {
             headers: {
                 'Content-Type': 'application/json',
-                // 'X-CSRFToken': csrfToken.value
             }
         })
         .then(response => {
             console.log(response.data)
-            if (response.status === 201) {
+            if (response.status === 200) {
+                console.log(response.data.username)
+                localStorage.setItem('username', response.data.username)
+                localStorage.setItem('user_id', response.data.user_id)
+                localStorage.setItem('admin', response.data.admin)
                 router.push('/home')
             }
         })
-        .catch(error => console.log(error))
+        .catch(
+            error => console.log(error)
+        )
 }
 
 </script>

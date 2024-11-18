@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue'
 
 
 const state = ref(false)
+const username = ref()
 
 const getCurrentUrl = () => {
     const url = window.location.pathname
@@ -11,6 +12,7 @@ const getCurrentUrl = () => {
         state.value = false
     } else {
         state.value = true
+        username.value = localStorage.getItem('username')
     }
 }
 
@@ -34,6 +36,9 @@ onMounted (()=>{
                 </li>
                 <li class="nav-item">
                     <RouterLink to="/createOrder" class="nav-link">Оставить заявку</RouterLink>
+                </li>
+                <li class="nav-item d-flex align-items-center ms-5">
+                    <p class="my-0">{{ username }}</p>
                 </li>
 
             </ul>
